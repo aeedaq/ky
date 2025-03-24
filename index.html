@@ -1,0 +1,806 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Fullscreen Image with Fixed Menu Button</title>
+    <!-- AOS CSS -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/aos/2.3.4/aos.css">
+<title>Home</title>
+    <style>
+        html {
+            background: rgb(253, 250, 246);
+            scroll-behavior: smooth;
+        }
+
+        /* Initially hidden and offset */
+        .fade-in {
+            opacity: 0;
+            transform: translateY(30px);
+            transition: opacity 0.8s ease-out, transform 0.8s ease-out;
+        }
+
+        /* Show elements when in viewport */
+        .fade-in.show {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        @font-face {
+            font-family: 'Regular-Cutesy';
+            src: url('assets/fonts/AbhayaLibre[wght].ttf') format('truetype');
+
+        }
+
+        @font-face {
+            font-family: 'Regular-Zhenya';
+            src: url('assets/fonts/15553.ttf') format('truetype');
+
+        }
+
+        @font-face {
+            font-family: 'Main-Flashy';
+            src: url('assets/fonts/MADE\ Cannes\ PERSONAL\ USE.otf') format('truetype');
+        }
+
+        @font-face {
+            font-family: 'Regular-Thin';
+            src: url('assets/fonts/QueensidesLight-ZVj3l.ttf') format('truetype');
+
+        }
+
+        * {
+
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+
+        }
+
+        body {
+
+            overflow-x: hidden;
+        }
+
+        /* Fullscreen Image */
+        .bg img {
+            width: 100vw;
+            height: 100vh;
+            object-fit: cover;
+            position: absolute;
+            top: 0;
+            left: 0;
+            z-index: -1;
+        }
+
+        /* Overlay content */
+        .overlay {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            color: white;
+            text-align: center;
+            background: rgba(5, 3, 3, 0.5);
+        }
+
+        .home-page-name {
+            width: 450px;
+            ;
+        }
+
+        .overlay h1 {
+            font-size: 2rem;
+            margin-bottom: 20px;
+        }
+
+        /* Menu & Close Buttons */
+        .menu-btn,
+        .close-btn {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            width: 50px;
+            height: 50px;
+            background: transparent;
+            border: none;
+            cursor: pointer;
+            z-index: 1001;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .menu-btn div,
+        .close-btn div {
+            position: absolute;
+            width: 35px;
+            height: 1px;
+            background: white;
+            border-radius: 5px;
+            transition: 1s ease-in-out;
+        }
+
+        .scrolled .menu-btn div {
+            background: black;
+            /* Change color to black when scrolled */
+        }
+
+        .menu-btn div {
+            position: absolute;
+            width: 35px;
+            height: 1px;
+            /* Changed from 1px to 2px for better visibility */
+            background: white;
+            /* Default color */
+            border-radius: 5px;
+            transition: background 0.3s ease-in-out;
+            /* Smooth color transition */
+        }
+
+        /* Hamburger Icon */
+        .menu-btn div:nth-child(1) {
+            top: 10px;
+        }
+
+        .menu-btn div:nth-child(2) {
+            top: 20px;
+        }
+
+        .menu-btn div:nth-child(3) {
+            top: 30px;
+        }
+
+        /* Close Button - Initially Hidden */
+        .close-btn {
+            display: none;
+        }
+
+        .close-btn div:nth-child(1) {
+            transform: rotate(45deg);
+        }
+
+        .close-btn div:nth-child(2) {
+            opacity: 0;
+        }
+
+        .close-btn div:nth-child(3) {
+            transform: rotate(-45deg);
+        }
+
+        /* Sidebar Menu */
+        .menu {
+            position: fixed;
+            top: 0;
+            right: -110%;
+            width: 100vw;
+            height: 100vh;
+            background-image: url(assets/pics/home-page/menu-back.jpg);
+            background-size: cover;
+            /* Ensures the image fully covers the menu */
+            background-position: center;
+            /* Centers the image */
+            background-repeat: no-repeat;
+            /* Prevents tiling */
+            color: white;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            transition: right 1s ease-in-out;
+            z-index: 1000;
+
+        }
+
+        .menu::after {
+            content: "";
+            /* Required for pseudo-elements */
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.7);
+            /* Dark overlay */
+            z-index: -1;
+            /* Places it behind the content but above the background image */
+        }
+
+        .menu a {
+            color: white;
+            text-decoration: none;
+            font-size: 2rem;
+            margin: 20px 0;
+        }
+
+        .menu-contact-button {
+            border: 1px solid white;
+            font-size: 30px;
+
+            background-color: rgba(255, 255, 255, 0);
+            color: white;
+            padding: 20px;
+            margin-top: 50px;
+            width: 300px;
+            height: 80px;
+        }
+
+        .image-gallery {
+            position: relative;
+            width: 90%;
+            height: 3500px;
+            margin: 0 auto;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            background-color: rgba(255, 255, 255, 0);
+        }
+
+        .img {
+
+            max-width: 350px;
+
+            object-fit: cover;
+            position: relative;
+            margin-bottom: -10%;
+            /* Creates slight overlap */
+        }
+
+        /* Image sizes and shifts */
+        .img1 {
+            width: 95%;
+            position: relative;
+            left: -120px;
+            top: 10px;
+        }
+
+        .img2 {
+            width: 85%;
+            position: relative;
+            left: 120px;
+            top: 10px;
+        }
+
+        .img8 {
+            width: 90%;
+            position: relative;
+            left: 100px;
+            top: 50px;
+        }
+
+        .img3 {
+            width: 60%;
+            position: relative;
+            left: -120px;
+            top: 50px;
+        }
+
+        .img4 {
+            width: 90%;
+            position: relative;
+            left: 120px;
+            top: 250px;
+        }
+
+        .img5 {
+            width: 72%;
+            position: relative;
+            left: -120px;
+            top: 30px;
+        }
+
+        .img6 {
+            width: 58%;
+            position: relative;
+            left: 120px;
+            top: 100px;
+        }
+
+        .img7 {
+            width: 90%;
+            position: relative;
+            left: -120px;
+            top: 100px;
+        }
+
+
+
+
+        /* Centered Text & Button */
+        .quote,
+        .quote-h2,
+        .text-button-section {
+            text-align: center;
+            padding: 80px 20px;
+
+
+
+        }
+
+        .quote,
+        .quote-h2,
+        .text-button-section h2 {
+            font-size: 22px;
+            max-width: 600px;
+            margin: 0 auto 20px;
+            font-weight: 400;
+            line-height: 1.5;
+        }
+
+        .quote-autor-h6 {
+            margin-top: -10%;
+            text-align: right;
+        }
+
+        .view-more {
+            margin-top: 970px;
+            background-color: rgba(255, 255, 255, 0);
+            color: rgb(0, 0, 0);
+            border: 1px solid black;
+            padding: 12px 24px;
+            font-size: 30px;
+            cursor: pointer;
+            width: 300px;
+            height: 80px;
+            font-family: 'Regular-Thin';
+            transition: background-color 0.5s ease, color 0.5s ease;
+        }
+
+        .view-more:hover {
+            background-color: #000000;
+            color: white;
+
+        }
+
+        .worked-for-section {
+            margin-top: 10px;
+            text-align: center;
+            padding: 50px 0px 50px 0px;
+            background-color: rgb(253, 250, 246);
+            overflow: hidden;
+
+        }
+
+        .worked-for-section h2 {
+            font-size: 50px;
+            margin-bottom: 30px;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            font-family: 'Regular-Zhenya';
+            font-weight: 1;
+        }
+
+        @keyframes slide {
+            from {
+                transform: translateX(0);
+            }
+
+            to {
+                transform: translateX(-100%);
+            }
+        }
+
+        .logos {
+            overflow: hidden;
+            padding: 60px 0;
+
+            white-space: nowrap;
+            position: relative;
+        }
+
+        /*
+.logos:before,
+.logos:after {
+  position: absolute;
+  top: 0;
+  width: 250px;
+  height: 100%;
+  content: "";
+  z-index: 2;
+}
+
+.logos:before {
+  left: 0;
+  background: linear-gradient(to left, rgba(255, 255, 255, 0), rgb(253, 250, 246));
+}
+
+.logos:after {
+  right: 0;
+  background: linear-gradient(to right, rgba(255, 255, 255, 0), rgb(253, 250, 246));
+} */
+
+        .logos:hover .logos-slide {
+            animation-play-state: paused;
+        }
+
+        .logos-slide {
+            display: inline-block;
+            animation: 35s slide infinite linear;
+        }
+
+        .logos-slide img {
+            height: 50px;
+            margin: 0 40px;
+        }
+
+        .about-me {
+            margin-top: 150px;
+        }
+
+        .about-me img {
+            width: 100vw;
+            height: 100vh;
+            object-fit: cover;
+
+            top: 0;
+            left: 0;
+        }
+
+        .about-me-name,
+        .about-me-title {
+            color: rgb(255, 255, 255);
+
+        }
+
+        .about-me-title {
+            font-family: 'Regular-Thin';
+            text-transform: uppercase;
+            font-size: 15px;
+            margin-bottom: 20px;
+        }
+
+        .about-me-name {
+            margin-top: -750px;
+            font-family: 'Main-Flashy';
+            font-size: 100px;
+
+        }
+
+        .about-me-paragraph {
+            width: 200px;
+            color: white;
+            font-family: 'Regular-Thin';
+
+        }
+
+        .learn-more-button {
+            width: 25%;
+            height: 30px;
+            margin-top: 30px;
+            border-radius: 0;
+            border: 1px solid white;
+            background-color: rgba(255, 255, 255, 0);
+            color: white;
+            font-family: 'Regular-Thin';
+            text-transform: uppercase;
+            width: 300px;
+            height: 80px;
+            font-size: 30px;
+            transition: background-color 0.5s ease, color 0.5s ease;
+        }
+        .learn-more-button:hover{
+            border:none;
+            background:black;
+            color:white;
+        }
+
+        .about-me-name,
+        .about-me-paragraph,
+        .about-me-title,
+        .learn-more-button {
+            margin-left: 20px;
+        }
+
+        .book-now-section {
+            margin-top: 20%;
+            text-align: center;
+            Height: 500px;
+
+            text-align: center;
+
+
+        }
+
+        .book-now-paragraph {
+
+
+            padding: 80px 20px;
+
+            font-family: 'Regular-Thin';
+            font-size: 25px;
+
+
+
+
+        }
+
+        .book-now-button {
+            background-color: rgba(255, 255, 255, 0);
+            color: black;
+            border: none;
+            padding: 12px 24px;
+            font-size: 16px;
+            cursor: pointer;
+            transition: background 0.3s ease;
+            width: 300px;
+            height: 80px;
+            border: 1px solid black;
+            font-size: 30px; 
+            font-family: 'Regular-Thin'; 
+            transition: background-color 0.5s ease, color 0.5s ease;
+
+        }
+
+        .book-now-button:hover {
+            color:white;
+            background:black;
+        }
+
+        footer {
+            text-align: center;
+        }
+
+        .instagram {
+            position: relative;
+            display: inline-block;
+        }
+
+        .instagram img {
+            display: block;
+            width: 100%;
+            /* Adjust as needed */
+            height: auto;
+        }
+
+        .insta-button {
+
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            background-color: black;
+            color: white;
+            border: none;
+            width: 400px;
+            height: 50px;
+            padding: -15px 0px;
+            font-family: "Regular-Thin";
+            text-transform: uppercase;
+            cursor: pointer;
+            font-size: 30px;
+
+        }
+
+        .footer-info {
+            background-color: black;
+            color: white;
+            height: 700px;
+        }
+
+        .footer-name {
+            font-family: 'Main-Flashy';
+            font-size: 100px;
+            padding-top: 100px;
+        }
+
+        .insta-icon {
+            margin-top: 100px;
+        }
+
+        .email {
+            color: white;
+            font-family: "Regular-Thin";
+            text-transform: uppercase;
+            text-decoration: none;
+            margin-top: 20px;
+        }
+
+        hr {
+            border: none;
+            height: 1px;
+            background-color: white;
+            /* Line color */
+            margin: 80px 0;
+            /* Space above and below */
+        }
+    </style>
+</head>
+
+<body>
+
+    <!-- Fullscreen Image -->
+    <div class="bg ">
+        <img class="fade-in" src="assets/pics/home-page/home-pic.jpg" alt="Fullscreen Image">
+    </div>
+
+    <!-- Overlay content -->
+    <div class="overlay">
+        <p><img class="home-page-name fade-in" src="assets/pics/home-page/home-name-logo.png" </p>
+
+    </div>
+
+    <!-- Fixed Menu Button (Hamburger Icon) -->
+    <button class="menu-btn" id="menuBtn" onclick="openMenu()">
+        <div></div>
+        <div></div>
+        <div></div>
+    </button>
+
+    <!-- Sidebar Menu -->
+    <div class="menu" id="menu">
+        <a style="font-family: 'Main-Flashy'; font-size:50px;" href="#">HOME</a>
+        <a style="font-family: 'Main-Flashy'; font-size:50px;" href="#">GALLERY</a>
+        <a style="font-family: 'Main-Flashy'; font-size:50px;" href="#">ABOUT</a>
+        <a style="font-family: 'Main-Flashy'; font-size:50px;" href="#">JOURNAL</a>
+        <button onclick="location.href='contact.html'" class="menu-contact-button" style="font-family:'Regular-Thin';"">CONTACT</button>
+    </div>
+
+    <!-- Close Button (Initially Hidden) -->
+    <button class=" close-btn" id="closeBtn" onclick="closeMenu()">
+            <div></div>
+            <div></div>
+            <div></div>
+        </button>
+
+        <section style="margin-top: 100vh; padding: 50px 20px;  background:rgb(253, 250, 246);position:relative; ">
+            <div class="fade-in"
+                style="text-align: left;font-family: 'Regular-Thin'; font-size: 18px; letter-spacing: 2px; text-transform: uppercase; margin-bottom: 30px;">
+                TORONTO | WORLDWIDE
+            </div>
+
+            <!-- Chaotic Image Gallery with Overlapping -->
+            <div class="image-gallery">
+                <img src="assets/pics/home-page/home-page-showcase-pic-1.jpg" alt="Photo 1" class="img img1 fade-in">
+                <img src="assets/pics/home-page/home-page-showcase-pic-2.jpg" alt="Photo 2" class="img img2 fade-in">
+                <img src="assets/pics/home-page/icon1.png" alt="Photo 3" class="img img8 fade-in">
+                <img src="assets/pics/home-page/home-page-showcase-pic-3.jpg" alt="Photo 3" class="img img3 fade-in">
+                <img src="assets/pics/home-page/home-page-showcase-pic-4.jpg" alt="Photo 4" class="img img4 fade-in">
+                <p class="fade-in"
+                    style="margin-top:400px;text-align:justify;font-family: 'Regular-Zhenya'; font-size: 50px;padding:100px 0px; ">
+
+                    a MASTERY of every Moment from PORTRAITS to CELEBRATIONS,
+                    capturing it all with <span style="text-align: right">STYLE</span></p>
+                <img src="assets/pics/home-page/home-page-showcase-pic-5.jpg" alt="Photo 5" class="img img5 fade-in">
+                <img src="assets/pics/home-page/home-page-showcase-pic-6.jpg" alt="Photo 6" class="img img6 fade-in">
+                <img src="assets/pics/home-page/home-page-showcase-pic-7.jpg" alt="Photo 7" class="img img7 fade-in">
+            </div>
+        </section>
+
+        <!-- Section: Centered Text & Button -->
+        <section class="text-button-section">
+
+            <button class="view-more">VIEW MORE</button>
+        </section>
+
+        <!-- Worked For Section with Seamless Brand Carousel -->
+        <section class="worked-for-section">
+            <h2>Worked For</h2>
+            <div class="logos">
+                <div class="logos-slide">
+                    <img src="./logos/3m.svg" />
+                    <img src="./logos/barstool-store.svg" />
+                    <img src="./logos/budweiser.svg" />
+                    <img src="./logos/buzzfeed.svg" />
+                    <img src="./logos/forbes.svg" />
+                    <img src="./logos/macys.svg" />
+                    <img src="./logos/menshealth.svg" />
+                    <img src="./logos/mrbeast.svg" />
+                </div>
+
+                <div class="logos-slide">
+                    <img src="./logos/3m.svg" />
+                    <img src="./logos/barstool-store.svg" />
+                    <img src="./logos/budweiser.svg" />
+                    <img src="./logos/buzzfeed.svg" />
+                    <img src="./logos/forbes.svg" />
+                    <img src="./logos/macys.svg" />
+                    <img src="./logos/menshealth.svg" />
+                    <img src="./logos/mrbeast.svg" />
+                </div>
+            </div>
+        </section>
+
+        <section class="quote fade-in">
+            <h2 class="quote-h2" style="font-family: 'Regular-Thin';font-size: 40px;">"Which of my photographs is my
+                favourite? The one I’m going to take tomorrow." </h2>
+            <p class="quote-autor-h6 style="
+                style="font-family:'Regular-Thin';text-transform: uppercase; font-size: 15px; margin-top: -70px;">–
+                Imogen Cunningham</p>
+        </section>
+
+        <div class="about-me">
+            <img class="fade-in" src="assets/pics/home-page/about-me.jpg" alt="Fullscreen Image">
+            <h1 class="about-me-name fade-in">Kali<br> Yevgeniia</h1>
+            <p class="about-me-title fade-in">Wedding and Lifestyle Photographer</p>
+            <p class='about-me-paragraph fade-in'>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do
+                eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud
+                exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in
+                reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur.</p>
+            <button class="learn-more-button fade-in">Learn more</button>
+        </div>
+
+        <section class="book-now-section">
+            <p class="book-now-paragraph fade-in">
+                <br>
+                <span
+                    style="text-transform: uppercase; font-size: 65px; font-family: 'Main-Flashy'; margin-top: 20px;">Let’s
+                    make your vision a reality</span>
+            </p>
+            <button  class="book-now-button" onclick="location.href='contact.html'">BOOK NOW</button>
+        </section>
+
+        <footer>
+            <div class="instagram">
+                <a href="https://www.instagram.com/kaliyevgeniia?igsh=MXJmZzFjbnhlbzc1aQ==" target="_blank"
+                    class="image-container">
+                    <img style="width:100vw;" src='assets/pics/footer/Untitled (1080 x 1080 px).png'>
+                    <button class="insta-button">@kalievgeniia</button></a>
+            </div>
+            <div class="footer-info">
+                <p class="footer-name">Kali <br>Yevgeniia</p><br><br><br><br>
+                <a class="insta-icon" href="https://www.instagram.com/kaliyevgeniia?igsh=MXJmZzFjbnhlbzc1aQ==">
+                    <img border="0" src="assets/pics/footer/icons8-instagram.svg" width="40" height="40">
+                </a>
+                <pre></pre><br>
+
+                <a class='email' href="mailto:klyevheniia@gmail.com">klyevheniia@gmail.com</a>
+                <hr>
+
+                <p style="font-family: 'Regular-Thin'; margin-top: -25px; text-align: center;">&#9400; 2025 by Kali
+                    Yevgeniia</p>
+
+            </div>
+        </footer>
+
+
+        <script>
+            function openMenu() {
+                document.getElementById("menu").style.right = "0";
+                document.getElementById("menuBtn").style.display = "none"; // Hide menu button
+                document.getElementById("closeBtn").style.display = "flex"; // Show close button
+            }
+            function closeMenu() {
+                document.getElementById("menu").style.right = "-110%";
+                document.getElementById("menuBtn").style.display = "flex"; // Show menu button again
+                document.getElementById("closeBtn").style.display = "none"; // Hide close button
+            }
+
+            var copy = document.querySelector(".logos-slide").cloneNode(true);
+            document.querySelector(".logos").appendChild(copy);
+
+            document.addEventListener("DOMContentLoaded", function () {
+                const elements = document.querySelectorAll(".fade-in");
+
+                const observer = new IntersectionObserver((entries) => {
+                    entries.forEach((entry) => {
+                        if (entry.isIntersecting) {
+                            entry.target.classList.add("show"); // Add class when in view
+                        } else {
+                            entry.target.classList.remove("show"); // Remove class when out of view
+                        }
+                    });
+                }, { threshold: 0.2 }); // 20% of the element must be visible to trigger
+
+                elements.forEach((el) => observer.observe(el));
+            });
+
+
+            window.addEventListener("scroll", function () {
+                if (window.scrollY >= window.innerHeight) { // Check if user scrolled 100vh
+                    document.body.classList.add("scrolled");
+                } else {
+                    document.body.classList.remove("scrolled");
+                }
+            });
+
+        </script>
+
+</body>
+
+</html>

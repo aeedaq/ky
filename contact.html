@@ -1,0 +1,434 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>CONTACT</title>
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      overflow-x: hidden;
+      /* Prevents extra spacing issues */
+    }
+
+    @font-face {
+      font-family: 'Regular-Cutesy';
+      src: url('assets/fonts/AbhayaLibre[wght].ttf') format('truetype');
+
+    }
+
+    @font-face {
+      font-family: 'Regular-Zhenya';
+      src: url('assets/fonts/15553.ttf') format('truetype');
+
+    }
+
+    @font-face {
+      font-family: 'Main-Flashy';
+      src: url('assets/fonts/MADE\ Cannes\ PERSONAL\ USE.otf') format('truetype');
+    }
+
+    @font-face {
+      font-family: 'Regular-Thin';
+      src: url('assets/fonts/QueensidesLight-ZVj3l.ttf') format('truetype');
+
+    }
+
+    body {
+      padding-top: 80px;
+      /* Same as the header height */
+      background: rgb(253, 250, 246);
+    }
+
+    header {
+      background-color: rgba(83, 79, 63, 0.3);
+      height: 80px;
+      position: fixed;
+      /* Sticks it to the top */
+      top: 0;
+      left: 0;
+      width: 100vw;
+    }
+
+    .header-name {
+      font-family: "Main-Flashy";
+      font-size: 35px;
+      margin-top: 20px;
+      color: white;
+      margin-left: 20px;
+    }
+
+    .select-text {
+      margin-top: 40px;
+      font-family: "Regular-Zhenya";
+      font-size: 50px;
+      text-transform: uppercase;
+      text-align: center;
+      margin-bottom: 40px;
+    }
+
+    .wedding,
+    .corp,
+    .portrait,
+    .video,
+    .other {
+      width: 100vw;
+      height: 20vh;
+      display: flex;
+      justify-content: center;
+      /* Center the button horizontally */
+      align-items: center;
+      /* Center the button vertically */ 
+      background-size: cover;
+
+    }
+
+    .wedding {
+      background-image: url(assets/pics/contact-page/2.png);
+    }
+    .corp {
+      background-image: url(assets/pics/contact-page/1.png);
+    }
+    .portrait {
+      background-image: url(assets/pics/contact-page/4.png);
+    }
+    .video {
+      background-image: url(assets/pics/contact-page/3.png);
+    }
+    .other {
+      background-image: url(assets/pics/contact-page/5.png);
+    }
+
+    
+
+    /* Styling only the specific buttons inside those sections */
+    .custom-btn {
+      font-family: "Regular-Thin";
+      width: 300px;
+      height: 80px;
+      border: 1px solid white;
+      background: rgba(255, 255, 255, 0);
+      color:white;
+      font-size: 18px;
+      font-weight: bold;
+      text-transform: uppercase;
+      cursor: pointer;
+      display: flex;
+      justify-content: center;
+      /* Center text inside button */
+      align-items: center;
+      /* Center text inside button */
+      text-align: center;
+      /* Ensures text is centered */
+      transition: all 0.3s ease-in-out;
+    }
+
+    /* Optional: Add hover effect */
+    .custom-btn:hover {
+      background: black;
+      color: white;
+      border: 1px solid black;
+    }
+
+
+
+    .overlay h1 {
+      font-size: 2rem;
+      margin-bottom: 20px;
+    }
+
+    /* Menu & Close Buttons */
+    .menu-btn,
+    .close-btn {
+      position: fixed;
+      top: 20px;
+      right: 20px;
+      width: 50px;
+      height: 50px;
+      background: transparent;
+      border: none;
+      cursor: pointer;
+      z-index: 1001;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+    }
+
+    .menu-btn div,
+    .close-btn div {
+      position: absolute;
+      width: 35px;
+      height: 1px;
+      background: white;
+      border-radius: 5px;
+      transition: 1s ease-in-out;
+    }
+
+    .scrolled .menu-btn div {
+      background: white;
+      /* Change color to black when scrolled */
+    }
+
+    .menu-btn div {
+      position: absolute;
+      width: 35px;
+      height: 1px;
+      /* Changed from 1px to 2px for better visibility */
+      background: white;
+      /* Default color */
+      border-radius: 5px;
+      transition: background 0.3s ease-in-out;
+      /* Smooth color transition */
+    }
+
+    /* Hamburger Icon */
+    .menu-btn div:nth-child(1) {
+      top: 10px;
+    }
+
+    .menu-btn div:nth-child(2) {
+      top: 20px;
+    }
+
+    .menu-btn div:nth-child(3) {
+      top: 30px;
+    }
+
+    /* Close Button - Initially Hidden */
+    .close-btn {
+      display: none;
+    }
+
+    .close-btn div:nth-child(1) {
+      transform: rotate(45deg);
+    }
+
+    .close-btn div:nth-child(2) {
+      opacity: 0;
+    }
+
+    .close-btn div:nth-child(3) {
+      transform: rotate(-45deg);
+    }
+
+    /* Sidebar Menu */
+    .menu {
+      position: fixed;
+      top: 0;
+      right: -110%;
+      width: 100vw;
+      height: 100vh;
+      background-image: url(assets/pics/home-page/menu-back.jpg);
+      background-size: cover;
+      /* Ensures the image fully covers the menu */
+      background-position: center;
+      /* Centers the image */
+      background-repeat: no-repeat;
+      /* Prevents tiling */
+      color: white;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      transition: right 1s ease-in-out;
+      z-index: 1000;
+
+    }
+
+    .menu::after {
+      content: "";
+      /* Required for pseudo-elements */
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: rgba(0, 0, 0, 0.7);
+      /* Dark overlay */
+      z-index: -1;
+      /* Places it behind the content but above the background image */
+    }
+
+    .menu a {
+      color: white;
+      text-decoration: none;
+      font-size: 2rem;
+      margin: 20px 0;
+    }
+
+    .menu-contact-button {
+      border: 1px solid white;
+      font-size: 30px;
+
+      background-color: rgba(255, 255, 255, 0);
+      color: white;
+      padding: 20px;
+      margin-top: 50px;
+      width: 300px;
+      height: 80px;
+    }
+
+    .email-text {
+      margin: 100px;
+      font-family: "Regular-Zhenya";
+      font-size: 30px;
+      text-align: center;
+    }
+    footer {
+      text-align: center;
+    }
+
+    .instagram {
+      position: relative;
+      display: inline-block;
+      width:100vw;
+    }
+
+    .insta-icon {
+margin-top: 200px;
+
+    }
+
+    .insta-button {
+
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      background-color: black;
+      color: white;
+      border: none;
+      width: 400px;
+      height: 50px;
+      padding: -15px 0px;
+      font-family: "Regular-Thin";
+      text-transform: uppercase;
+      cursor: pointer;
+      font-size: 30px;
+
+    }
+
+    .footer-info {
+      background-color: black;
+      color: white;
+ 
+    }
+
+    .footer-name {
+      font-family: 'Main-Flashy';
+      font-size: 100px;
+      padding-top: 100px;
+      margin-bottom: 50px;
+    }
+
+
+
+    .email {
+      color: white;
+      font-family: "Regular-Thin";
+      text-transform: uppercase;
+      text-decoration: none;
+      margin-top: -20px;
+      background-color: black;
+    }
+
+    hr {
+      border: none;
+      height: 1px;
+      background-color: white;
+      /* Line color */
+      margin: 80px 0;
+      /* Space above and below */
+    }
+  </style>
+</head>
+
+<body>
+  <header>
+    <p class='header-name'>Kali Yevgeniia</p>
+  </header>
+
+  <!-- Fixed Menu Button (Hamburger Icon) -->
+  <button class="menu-btn" id="menuBtn" onclick="openMenu()">
+    <div></div>
+    <div></div>
+    <div></div>
+  </button>
+
+  <!-- Sidebar Menu -->
+  <div class="menu" id="menu">
+    <a style="font-family: 'Main-Flashy'; font-size:50px;" href="#">HOME</a>
+    <a style="font-family: 'Main-Flashy'; font-size:50px;" href="#">GALLERY</a>
+    <a style="font-family: 'Main-Flashy'; font-size:50px;" href="#">ABOUT</a>
+    <a style="font-family: 'Main-Flashy'; font-size:50px;" href="#">JOURNAL</a>
+    <button onclick="location.href='contact.html'" class="menu-contact-button" style="font-family:'Regular-Thin';"">CONTACT</button>
+  </div>
+
+  <!-- Close Button (Initially Hidden) -->
+  <button class=" close-btn" id="closeBtn" onclick="closeMenu()">
+      <div></div>
+      <div></div>
+      <div></div>
+    </button>
+    <p class="select-text"> select your inquiry</p>
+    <div class="wedding">
+      <button onclick="location.href='wedding-inquiry.html'" class="custom-btn wedding-btn">wedding</button>
+    </div>
+    <div class="corp">
+      <button class="custom-btn corp-btn">corporate event</button>
+    </div>
+    <div class="portrait">
+      <button class="custom-btn portrait-btn">portrait</button>
+    </div>
+    <div class="video">
+      <button class="custom-btn video-btn">videography</button>
+    </div>
+    <div class="other">
+      <button class="custom-btn other-btn">other</button>
+    </div>
+
+    <p class="email-text">Or email <b>klyevheniia@gmail.com</b> to inquire</p>
+
+    <footer>
+      <div class="instagram">
+        <a href="https://www.instagram.com/kaliyevgeniia?igsh=MXJmZzFjbnhlbzc1aQ==" target="_blank"
+          class="image-container">
+          <img style="width:100vw;" src='assets/pics/footer/Untitled (1080 x 1080 px).png'>
+          <button class="insta-button">@kalievgeniia</button></a>
+      </div>
+      <div class="footer-info">
+        <p class="footer-name">Kali <br>Yevgeniia</p>
+        <a class="insta-icon" href="https://www.instagram.com/kaliyevgeniia?igsh=MXJmZzFjbnhlbzc1aQ==">
+          <img border="0" src="assets/pics/footer/icons8-instagram.svg" width="40" height="40">
+        </a><br><br>
+
+
+        <a class='email' href="mailto:klyevheniia@gmail.com">klyevheniia@gmail.com</a>
+        <hr>
+
+        <p style="font-family: 'Regular-Thin'; margin-top: -50px;margin-bottom: 30px; text-align: center;">&#9400; 2025 by Kali
+          Yevgeniia</p>
+
+      </div>
+    </footer>
+
+    <script>
+      function openMenu() {
+        document.getElementById("menu").style.right = "0";
+        document.getElementById("menuBtn").style.display = "none"; // Hide menu button
+        document.getElementById("closeBtn").style.display = "flex"; // Show close button
+      }
+      function closeMenu() {
+        document.getElementById("menu").style.right = "-110%";
+        document.getElementById("menuBtn").style.display = "flex"; // Show menu button again
+        document.getElementById("closeBtn").style.display = "none"; // Hide close button
+      }
+    </script>
+
+</body>
+
+</html>
